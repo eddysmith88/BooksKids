@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for message in get_flashed_messages() %}
+        <br>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+             {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <br>
+    <center>
+    <h1>Sing Up</h1>
+    </center>
+    <div class="container-wrapper">
+
+        <br><br>
+
+    <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.username.label(class="form-label") }}
+    {{ form.username(class="form-control") }}
+        <br>
+    {{ form.email.label(class="form-label")}}
+    {{ form.email(class="form-control") }}
+            <br>
+    {{ form.password_hash.label(class="form-label")}}
+    {{ form.password_hash(class="form-control") }}
+           <br>
+    {{ form.password_hash2.label(class="form-label")}}
+    {{ form.password_hash2(class="form-control") }}
+        <br>
+    {{ form.profile_pic.label(class="form-label") }}
+    {{ form.profile_pic(class="form-control") }}
+        <br>
+    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+        {{ form.submit.label }}
+    </button>
+    </form>
+
+    </div>
+{% endblock %}

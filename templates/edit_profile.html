@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<center>
+<h1>Edit Profile</h1>
+</center>
+    <div class="container-custom">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.username.label(class="form-label")}}
+            {{ form.username(class="form-control rounded-pill", value=name_to_update.username) }}
+            <br>
+            {{ form.email.label(class="form-label")}}
+            {{ form.email(class="form-control rounded-pill", value=name_to_update.email) }}
+            <br>
+            {{ form.profile_pic.label(class="form-label")}}
+            {{ form.profile_pic(class="form-control rounded-pill", value=name_to_update.profile_pic) }}
+            <br>
+            <button data-mdb-ripple-init type="submit" class="btn btn-success btn-block mb-4" style="border-radius: 25px;">
+                {{ form.submit.label }}
+            </button>
+        </form>
+    </div>
+{% endblock %}

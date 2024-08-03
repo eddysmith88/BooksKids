@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+    <h1>{{ books[0].category.name }}</h1>
+    </center>
+    <div class="d-flex flex-wrap justify-content-center" style="margin-top: 45px">
+        {% for book in books %}
+            <div class="card" style="width: 18rem; margin: 15px;">
+                <a href="{{ url_for('read_page', book_id=book.id) }}" class="text-decoration-none">
+                    <img src="{{ url_for('static', filename='uploads/' + book.image ) }}" alt="{{ book.title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                </a>
+                <div class="card-body">
+                    <a href="{{ url_for('book_info', book_id=book.id) }}" class="text-decoration-none">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                    </a>
+                    <p class="card-text">{{ book.description|truncate(23, True) }}</p>
+                    <div>
+                        <a
+                            data-mdb-ripple-init
+                            class="btn btn-link btn-floating btn-lg text-body m-1"
+                            href="javascript:void(0);"
+                            role="button"
+                            data-mdb-ripple-color="dark"
+                            onclick="likeBook({{ book.id }})"
+                        >
+                            <span id="likes-count-{{ book.id }}">{{ book.likes_count }}</span>
+                            <i id="like-icon-{{ book.id }}" class="{{ 'fas fa-heart' if book.is_liked else 'far fa-heart' }}"></i>
+                        </a>
+
+
+                        <a
+                            data-mdb-ripple-init
+                            class="btn btn-link btn-floating btn-lg text-body m-1"
+                            href="javascript:void(0);"
+                            role="button"
+                            data-mdb-ripple-color="dark"
+                            onclick="favoriteBook({{ book.id }})"
+                        >
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    <hr>
+                    <p class="card-text text-muted">{{ book.category.name }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('home', page=pagination.prev_num) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num == pagination.page %}
+                        <li class="page-item active"><a class="page-link" href="#" style="background-color: gray">{{ page_num }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('home', page=pagination.next_num) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+
+    <script>
+        function likeBook(bookId) {
+            fetch('/like/' + bookId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ form.hidden_tag() }}'
+                },
+                body: JSON.stringify({})
+            }).then(response => response.json()).then(data => {
+                document.getElementById('likes-count-' + bookId).innerText = data.likes_count;
+                var likeIcon = document.getElementById('like-icon-' + bookId);
+                if (data.liked) {
+                    likeIcon.classList.remove('far');
+                    likeIcon.classList.add('fas');
+                } else {
+                    likeIcon.classList.remove('fas');
+                    likeIcon.classList.add('far');
+                }
+            });
+        }
+
+        function favoriteBook(bookId) {
+            fetch('/favorite/' + bookId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ form.hidden_tag() }}'
+                },
+                body: JSON.stringify({})
+            }).then(response => response.json()).then(data => {
+                alert(data.message);
+            });
+        }
+    </script>
+
+
+{% endblock %}

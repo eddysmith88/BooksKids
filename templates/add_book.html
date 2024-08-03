@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+        <h1>Create book</h1>
+    </center>
+  <div class="container-custom">
+
+  <form method="POST" enctype="multipart/form-data" >
+        {{ form.hidden_tag() }}
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control rounded-pill") }}
+        <br>
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control", rows="5") }}
+        <br>
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control rounded-pill") }}
+        <br>
+        {{ form.category.label(class="form-label") }}
+        {{ form.category(class="form-control rounded-pill") }}
+        <br>
+        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+            {{ form.submit.label }}
+        </button>
+{#        {{ form.submit(class="btn btn-primary" , style="border-radius: 25px;") }}#}
+    </form>
+    {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+  </div>
+
+
+
+
+
+    
+
+{% endblock %}

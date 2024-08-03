@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+        <h1>Add content book</h1>
+    </center>
+    <div class="row" style="margin-bottom: 55px; margin-top: 55px">
+      <div class="col-md-6 offset-md-3" style="text-align: center">
+    <br>
+            <strong>{{ book.title }}</strong><br>
+          <img src="{{ url_for('static', filename='uploads/' + book.image ) }}" style="width: 300px; height: 300px" alt="">
+      <br><br>
+            {{ book.description }}<br>
+            <small>{{ book.author }}</small>
+      <br><br>
+       <h1><strong>Content block</strong></h1>
+      {#          <!-- HERE VIEW CONTENT ->#}
+            {% for content in add_contents %}
+                <div class="content-block">
+                    <p>{{ content.content }}</p>
+                    {% if content.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + content.image) }}" alt="Content Image" style="width: 300px; height: 300px;">
+                    {% endif %}
+                    <hr>
+                </div>
+            {% endfor %}
+
+
+
+  <form method="POST" enctype="multipart/form-data" >
+        {{ form.hidden_tag() }}
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control rounded-pill") }}
+        <br>
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control", rows="5", cols="40") }}
+      <br>
+        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+            {{ form.submit.label }}
+        </button>
+{#        {{ form.submit(class="btn btn-primary" , style="border-radius: 25px;") }}#}
+    </form>
+    <a class="btn btn-primary" href="{{ url_for('new_book', user_id=book.id) }}">Finish</a>
+
+    </div>
+  </div>
+
+
+
+
+
+    
+
+{% endblock %}

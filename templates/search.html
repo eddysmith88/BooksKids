@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <h1>Search results for: {{ searched }}</h1>
+    {% if books %}
+        {% for book in books %}
+            <div class="card" style="width: 18rem;">
+                <a href="{{ url_for('book_info', book_id=book.id) }}">
+                    <img src="{{ url_for('static', filename='uploads/' + book.image ) }}" class="card-img-top" style="height: 245px;" alt="...">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Sorry, nothing found for your search.</p>
+    {% endif %}
+{% endblock %}

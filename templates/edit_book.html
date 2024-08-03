@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+
+    <div class="container" style="text-align: center; ">
+        <h1 style="margin-top: 25px">Edit Book</h1>
+        <form method="POST" enctype="multipart/form-data" style="text-align: center;">
+            {{ book_form.hidden_tag() }}
+            {{ book_form.title.label(class="form-label")}}
+            {{ book_form.title(class="form-control") }}
+            <br>
+            {{ book_form.description.label(class="form-label")}}
+            {{ book_form.description(class="form-control", rows="5") }}
+            <br>
+            {{ book_form.image.label(class="form-label") }}
+            {{ book_form.image(class="form-control") }}
+            <br>
+            <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+                {{ book_form.submit.label }}
+            </button>
+        </form>
+        <br>
+    <h1>Edit content</h1>
+        {% for content_form in content_forms %}
+            <form method="POST" enctype="multipart/form-data" style="text-align: center;">
+                {{ content_form.hidden_tag() }}
+                {{ content_form.id }}
+                <br>
+                {{ content_form.content.label(class="form-label") }}
+                {{ content_form.content(class="form-control") }}
+                <br>
+                {{ content_form.image.label(class="form-label") }}
+                {{ content_form.image(class="form-control")  }}
+                <br>
+                <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+                    {{ content_form.submit.label }}
+                </button>
+            </form>
+            <br>
+        {% endfor %}
+        <div>
+        <a href="#" class="btn btn-danger" style="margin-bottom: 50px; border-radius: 25px;">
+            Delete book
+        </a>
+        </div>
+        <a href="{{ url_for('books_list') }}" class="btn btn-primary" style="margin-bottom: 50px; border-radius: 25px;">
+            Back
+        </a>
+
+
+
+{##}
+{#        <form method="POST" action="">#}
+{#            {{ form.hidden_tag() }}#}
+{#        <button data-mdb-ripple-init type="submit" class="btn btn-danger btn-block mb-4" style="border-radius: 25px;">#}
+{#                Delete book#}
+{#        </button>#}
+{#        </form>#}
+    </div>
+{% endblock %}

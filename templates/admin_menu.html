@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+    <h1>Admin menu</h1>
+    </center>
+    <div class="container-menu">
+        <a href="{{ url_for('create_book') }}" style="color: gray">
+            <div class="menu">
+                Add Book
+            </div>
+        </a>
+        <a href="{{ url_for('add_category') }}" style="color: gray">
+            <div class="menu">
+                Add Category
+            </div>
+        </a>
+    </div>
+    <hr>
+    <div class="container-menu">
+        <a href="{{ url_for('category_list') }}" style="color: gray">
+            <div class="menu">
+                Category List
+            </div>
+
+        </a>
+        <a href="{{ url_for('books_list') }}" style="color: gray">
+            <div class="menu">
+                Books list
+            </div>
+        </a>
+    </div>
+
+
+{% endblock %}

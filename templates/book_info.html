@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <br>
+    <h1>Book Info</h1>
+</center>
+<div class="row" style="margin-left: 55px; margin-top: 55px;">
+    <div class="col" >
+        <center>
+        {{ book.title }}
+            </center>
+        <hr>
+        <div class="container-menu">
+            <a href="{{ url_for('read_page', book_id=book.id ) }}">
+                <img src="{{ url_for('static', filename='uploads/' + book.image) }}" alt="" style="width: 380px; height: 380px;
+            border-radius: 40px">
+            </a>
+            <div style="margin-top: 5px;">
+                <a
+                    data-mdb-ripple-init
+                    class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="javascript:void(0);"
+                    role="button"
+                    data-mdb-ripple-color="dark"
+                    onclick="likePost({{ book.id }})"
+                >
+                    <span id="likes-count">{{ likes_count }}</span>
+                    <i id="like-icon" class="fas {{ 'fa-heart' if liked else 'fa-heart' }}"></i>
+
+                </a>
+
+                <a
+                    data-mdb-ripple-init
+                    class="btn btn-link btn-floating btn-lg text-body m-1"
+                    href="javascript:void(0);"
+                    role="button"
+                    data-mdb-ripple-color="dark"
+                    onclick="favoritePost({{ book.id }})"
+                >
+                    <i class="fas fa-plus"></i>
+                </a>
+
+            </div>
+
+        </div>
+        <div class="container-menu" >
+            <a href="{{ url_for('read_page', book_id=book.id ) }}" class="btn btn-dark" style="border-radius: 25px"> Read </a>
+            </div>
+        <br>
+        <div class="container-menu" >
+            <a href="{{ url_for('books_by_category', category_id=book.category_id ) }}" style="color: gray"> {{ book.category.name }} </a>
+            </div>
+        <hr>
+        <center>
+                {{ book.author }}<br>
+                <small>{{ formatted_date }}</small><br>
+            </center>
+
+    </div>
+    <div class="col order-5">
+        Recommends
+        <hr>
+        {% for rec in rec_books %}
+        <div class="card mb-3" style="width: 333px; height: 125px">
+
+          <div class="row g-0">
+
+            <div class="col-md-4">
+              <a href="{{ url_for('read_page', book_id=book.id) }}" class="text-decoration-none">
+                  <img src="{{ url_for('static', filename='uploads/' + rec.image) }}" alt="{{ rec.title }}" class="card-img-top"
+                       style="height: 125px; object-fit: cover; border-radius: 10px">
+              </a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{{ url_for('book_info', book_id=book.id) }}" class="text-decoration-none">
+                                {{ rec.title }}
+                    </a>
+                </h5>
+                <p class="card-text">
+                </p>
+                <p class="card-text">
+                    <a href="{{ url_for('books_by_category', category_id=rec.category_id ) }}" style="color: gray">
+                    <p class="card-text text-muted">{{ rec.category.name }}</p>
+                    </a>
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    <div class="col order-1" >
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"
+                style="border-radius: 20px; color: gray;">Description</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false"
+                style="border-radius: 20px; color: gray;">Comments</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <br>
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                {{ book.description }}
+
+            </div>
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                {% for comment in comments %}
+                    <div style="margin-top: 25px; border-radius: 15px; background-color: whitesmoke; text-align: center">
+                        <div style="text-align: left; padding: 10px;">
+                            <img src="{{ url_for('static', filename='uploads/' ~ current_user.profile_pic ) }}" alt="" style="width: 30px; height: 30px; border-radius: 50px; margin-right: 10px;">
+                            {{ comment.user.username }}
+                        </div>
+                        <hr style="margin: 0;">
+                        <p>{{ comment.content }}</p>
+                        <small><br> {{ comment.date_added.strftime('%H:%M') }} {{ comment.date_added.strftime('%d-%m-%Y') }} </small>
+                    </div>
+                {% endfor %}
+                <br><br>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.content.label(class="form-label") }}
+                        {{ form.content(class="form-control rounded-pill") }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-dark rounded-pill") }}
+                    </div>
+                </form>
+                <br><br><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function likePost(postId) {
+        fetch('/like/' + postId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ form.hidden_tag() }}'
+            },
+            body: JSON.stringify({})
+        }).then(response => response.json()).then(data => {
+            document.getElementById('likes-count').innerText = data.likes_count;
+            document.getElementById('like-icon').className = data.liked ? 'fas fa-heart' : 'far fa-heart';
+        });
+    }
+
+    function favoritePost(postId) {
+        fetch('/favorite/' + postId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ form.hidden_tag() }}'
+            },
+            body: JSON.stringify({})
+        }).then(response => response.json()).then(data => {
+            alert(data.message);
+        });
+    }
+</script>
+
+{% endblock %}

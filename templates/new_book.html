@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+        <h1>Publish book</h1>
+    </center>
+  <div class="container-custom">
+
+  <form method="POST" enctype="multipart/form-data" >
+        {{ form.hidden_tag() }}
+        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4" style="border-radius: 25px;">
+            {{ form.submit.label }}
+        </button>
+{#        {{ form.submit(class="btn btn-primary" , style="border-radius: 25px;") }}#}
+    </form>
+
+
+  </div>
+
+
+
+
+
+
+
+{% endblock %}

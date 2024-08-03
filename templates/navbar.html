@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg" style="border-radius: 50px; background-color: rgba(255, 255, 255, 0.8); color: black;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('home') }}" style="margin-left: 20px"><strong>BooksKids</strong></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="d-flex justify-content-center w-100 order-1 order-lg-0">
+{#        <form class="d-flex mx-auto">#}
+{#          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="border-radius: 25px">#}
+{#          <button class="btn btn-outline-dark" type="submit" ><i class="fas fa-magnifying-glass"></i></button>#}
+{#        </form>#}
+          <form class="d-flex mx-auto" style="max-width: 500px;" action="{{ url_for('search') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched" style="border-radius: 25px;">
+            <button class="btn" type="submit" style="border-radius: 25px;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+      </div>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 order-0 order-lg-1">
+          {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown" style="margin-right: 20px">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="{{ url_for('static',filename='uploads/' + current_user.profile_pic ) }}" alt="" style="width: 20px; height: 20px; border-radius: 50px">
+                {{ current_user.username }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Favorite books</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('admin_menu') }}">Admin menu</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('books_list') }}">Books list</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('category_list') }}">Category list</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+              </ul>
+            </li>
+            <!-- Admin dropdown -->
+{#              {% if current_user.id == 1 %}#}
+{#                    <li class="nav-item dropdown" >#}
+{#                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                        Admin panel#}
+{#                      </a>#}
+{#                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                        <li><a class="dropdown-item" href="#">Admin menu</a></li>#}
+{#                        <li><a class="dropdown-item" href="#">Books list</a></li>#}
+{#                        <li><a class="dropdown-item" href="#">Category list</a></li>#}
+{#                        <li><hr class="dropdown-divider"></li>#}
+{#                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>#}
+{#                      </ul>#}
+{#                    </li>#}
+{#              {% endif %}#}
+          {% else %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('add_user') }}">SignUp</a>
+                </li>
+
+          {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  @media (min-width: 992px) {
+    .navbar-collapse {
+      display: flex;
+      justify-content: space-between;
+    }
+    .navbar-nav {
+      margin-left: auto;
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <center>
+    <h1>Add Category</h1>
+    </center>
+
+    <div class="container-custom">
+            <form method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {{ form.category_name.label(class="form-label")}}
+                {{ form.category_name(class="form-control rounded-pill") }}
+            <br>
+                {{ form.image.label(class="form-label")}}
+                {{ form.image(class="form-control rounded-pill") }}
+                <br>
+                <button data-mdb-ripple-init type="submit" class="btn btn-success btn-block mb-4" style="border-radius: 25px;">
+                {{ form.submit.label }}
+            </button>
+            </form>
+    </div>
+
+
+
+{% endblock %}
